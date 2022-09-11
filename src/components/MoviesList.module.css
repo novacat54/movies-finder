@@ -1,0 +1,9 @@
+.searchResultList{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: -webkit-fill-available;
+  background-color: #342756;
+}
