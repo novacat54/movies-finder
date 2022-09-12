@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import {postReducer} from './postSlice';
+import {moviesReducer} from './moviesSlice';
 
 const store = configureStore({
   preloadedState: {},
   reducer: {
-    post: postReducer,
+    movies: moviesReducer,
   }
 })
 

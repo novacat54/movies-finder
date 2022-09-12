@@ -5,9 +5,9 @@ export type Item = {
   imDbRating: string,
   }
   
-  export type MoviesResponse = {
-    errorMessage: string;
-    items: Item[];
-  }
+  // export type MoviesResponse = {
+  //   errorMessage: string;
+  //   items: Item[];
+  // }
 
  
