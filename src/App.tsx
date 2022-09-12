@@ -1,6 +1,6 @@
 import './App.css';
 import SearchPage from './components/SearchPage';
-import { getPosts } from './redux/postSlice'
+import { getMovies } from './redux/moviesSlice'
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import MoviesList from './components/MoviesList';
@@ -9,17 +9,18 @@ import MoviesList from './components/MoviesList';
 function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getPosts());
+    dispatch(getMovies());
   }, []);
 
-  const { response, loading } = useAppSelector(state => state.post)
+  const { errorMessage, moviesListFromIMDB, loading } = useAppSelector(state => state.movies)
 
-  console.log(response);
+  console.log(moviesListFromIMDB);
+  console.log("Error message is " + errorMessage)
 
   return (
     <div className="App">
       <SearchPage />
-      {response.items.length === 0 ? '' : <MoviesList allMovies={response.items}/> }
+      {!loading ? <MoviesList/> : <h1>Loading...</h1>}
     </div>
   );
 }

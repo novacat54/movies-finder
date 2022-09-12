@@ -3,13 +3,13 @@ import MoviesListCss from './MoviesList.module.css'
 import MovieItem from './MovieItem';
 import { useAppSelector } from '../redux/hooks';
 
-function MoviesList(props = {allMovies:[] as Item[]}) {
+function MoviesList() {
 
-  //const movies = useAppSelector(state => state.post.response.items)
+  const moviesList = useAppSelector(state => state.movies.moviesListFromIMDB)
 
   return (
     <div className = {MoviesListCss.searchResultList}>
-      {props.allMovies.map(movie => 
+      {moviesList.map(movie => 
       <MovieItem movie={movie}/>)}
     </div>
   )
