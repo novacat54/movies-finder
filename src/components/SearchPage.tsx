@@ -3,20 +3,26 @@ import SearchPageCss from './SearchPage.module.css';
 import {KeyboardEvent} from 'react';
 import { useAppDispatch } from '../redux/hooks';
 import { getMovies } from '../redux/moviesSlice';
+import { Navigate, useLocation } from 'react-router-dom';
 
 function SearchPage() {
 
   const dispatch = useAppDispatch();
 
+  const location = useLocation();
+
   const enterKeyPressed = (event:KeyboardEvent<HTMLInputElement>) => {
     if(event.key == 'Enter' && event.target.value !=""){
         dispatch(getMovies(event.target.value));
+        // <Navigate to={`/movieName/${event.target.value}`}/>
+        location.pathname = `/movieName/${event.target.value}`;
     }
   }
 
   return (
      <div className={SearchPageCss.searchComponents}>
         <div>
+          {/* <Link to={`/movieName/${event?.targe}`}></> */}
           <input className={SearchPageCss.searchField} placeholder='Search for a movie...' onKeyPress={enterKeyPressed}></input>
           <button className={SearchPageCss.searchButton}></button>
         </div>
