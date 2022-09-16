@@ -10,7 +10,7 @@ function MoviesList() {
   return (
     <div className = {MoviesListCss.searchResultList}>
       {moviesList.map(movie => 
-      <MovieItem movie={movie}/>)}
+      <MovieItem key={movie.id} movie={movie}/>)}
     </div>
   )
 };

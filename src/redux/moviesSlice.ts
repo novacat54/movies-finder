@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type {Item} from './dataTypes';
 
-const apiKey = "k_5ecdu34x";
+const apiKey = "k_k42v67iw";
 
 export const getMovies = createAsyncThunk("movies/getMovies", async(searchParameter:string = '') => {
   if (searchParameter !=''){
@@ -15,11 +15,18 @@ export const getMovies = createAsyncThunk("movies/getMovies", async(searchParame
   })
 })
 
+export const getMovie = createAsyncThunk('movie/getMovie', async (movieId:string) => {
+  return fetch(`https://imdb-api.com/en/API/Title/${apiKey}/${movieId}`).then((res) => {
+    return res.json();
+  })
+})
+
 const moviesSlice = createSlice(({
   name: 'movies',
   initialState: {
     errorMessage: "",
     moviesListFromIMDB: [] as Item[],
+    selectedMovie: {} as Item,
     loading: false,
   },
   reducers: {},
@@ -36,7 +43,17 @@ const moviesSlice = createSlice(({
       .addCase(getMovies.rejected, (state) => {
         state.loading = false
       })
-
+      .addCase(getMovie.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMovie.fulfilled, (state, action)=> {
+        state.loading = false; 
+        state.selectedMovie = action.payload;
+        state.errorMessage = action.payload.errorMessage;
+      })
+      .addCase(getMovie.rejected, (state) => {
+        state.loading = false
+      })
   }
 }))
 
