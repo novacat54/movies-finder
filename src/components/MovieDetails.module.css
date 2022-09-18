@@ -1,0 +1,20 @@
+.movieInfo{
+  display: flex;
+  width: 1000px;
+  position: relative;
+  left: 200px;
+}
+
+.movieImage{
+  height:400px;
+  width: 300px;
+  padding: 40px;
+}
+
+.movieDescription{
+  color: azure;
+}
+
+.mainContainer{
+  background-color: #342756;
+}
