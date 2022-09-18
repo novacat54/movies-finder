@@ -4,6 +4,7 @@ export type Item = {
   title: string,
   image: string,
   imDbRating: string,
+  plot:string,
   }
   
   // export type MoviesResponse = {

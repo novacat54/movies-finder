@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type {Item} from './dataTypes';
 
-const apiKey = "k_k42v67iw";
+const apiKey = "k_ycy5n819";
 
 export const getMovies = createAsyncThunk("movies/getMovies", async(searchParameter:string = '') => {
   if (searchParameter !=''){
