@@ -1,21 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type {Item} from './dataTypes';
+import type { Item, RequestParams } from './dataTypes';
 
-const apiKey = "k_ycy5n819";
+const apiKey = "k_k42v67iw";
 
-export const getMovies = createAsyncThunk("movies/getMovies", async(searchParameter:string = '') => {
-  if (searchParameter !=''){
-    return fetch(`https://imdb-api.com/en/API/SearchMovie/${apiKey}/${searchParameter}`).then((res) => {
+export const getMovies = createAsyncThunk("movies/getMovies", async ({ searchMovie = '', genre = '' }: RequestParams) => {
+  if (searchMovie !== '') {
+    return fetch(`https://imdb-api.com/en/API/SearchMovie/${apiKey}/${searchMovie}`).then((res) => {
       return res.json();
     })
   }
-  
-  return fetch("https://imdb-api.com/en/API/InTheaters/" + apiKey).then((res) => {
-    return res.json();
-  })
+
+  else if (genre !== '') {
+    return fetch(`https://imdb-api.com/en/API/AdvancedSearch/${apiKey}/?genres=${genre}`).then((res) => {
+      return res.json();
+    })
+  }
+  else {
+    return fetch("https://imdb-api.com/en/API/InTheaters/" + apiKey).then((res) => {
+      return res.json();
+    })
+  }
 })
 
-export const getMovie = createAsyncThunk('movie/getMovie', async (movieId:string) => {
+export const getMovie = createAsyncThunk('movie/getMovie', async (movieId: string) => {
   return fetch(`https://imdb-api.com/en/API/Title/${apiKey}/${movieId}`).then((res) => {
     return res.json();
   })
@@ -25,9 +32,11 @@ const moviesSlice = createSlice(({
   name: 'movies',
   initialState: {
     errorMessage: "",
+    expression: "",
     moviesListFromIMDB: [] as Item[],
     selectedMovie: {} as Item,
     loading: false,
+    queryString: "",
   },
   reducers: {},
   extraReducers: builder => {
@@ -35,10 +44,12 @@ const moviesSlice = createSlice(({
       .addCase(getMovies.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getMovies.fulfilled, (state, action)=> {
-        state.loading = false; 
+      .addCase(getMovies.fulfilled, (state, action) => {
+        state.loading = false;
         state.moviesListFromIMDB = action.payload.items || action.payload.results;
+        state.expression = action.payload.expression || undefined;
         state.errorMessage = action.payload.errorMessage;
+        state.queryString = action.payload.queryString || undefined;
       })
       .addCase(getMovies.rejected, (state) => {
         state.loading = false
@@ -46,8 +57,8 @@ const moviesSlice = createSlice(({
       .addCase(getMovie.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getMovie.fulfilled, (state, action)=> {
-        state.loading = false; 
+      .addCase(getMovie.fulfilled, (state, action) => {
+        state.loading = false;
         state.selectedMovie = action.payload;
         state.errorMessage = action.payload.errorMessage;
       })

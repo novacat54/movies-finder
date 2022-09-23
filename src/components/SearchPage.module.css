@@ -15,16 +15,6 @@
   border-radius: 10px;
 }
 
-.searchButton{
-  position: absolute;
-  width: 32px;
-  height: 32px;
-  top: 50px;
-  left: 776px;
-  background: #9069FF;
-  border-radius: 50%;
-}
-
 .genres{
   position: absolute;
   width: 236px;
