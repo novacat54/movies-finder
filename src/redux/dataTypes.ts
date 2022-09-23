@@ -4,12 +4,10 @@ export type Item = {
   title: string,
   image: string,
   imDbRating: string,
-  plot:string,
-  }
-  
-  // export type MoviesResponse = {
-  //   errorMessage: string;
-  //   items: Item[];
-  // }
+  plot: string,
+}
 
- 
+export type RequestParams = {
+  searchMovie: string,
+  genre: string,
+}

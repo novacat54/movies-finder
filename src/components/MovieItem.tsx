@@ -8,11 +8,11 @@ function MovieItem(props = { movie: {} as Item }) {
 
   return (
     <div>
-      <Link to = {`/movieId/${props.movie.id}`}>
-      <div className={MovieItemCss.movieItem} style={{ backgroundImage: backgroundImageUrl }}>
-        <h2>{props.movie.title}</h2>
-        <h3>{props.movie.imDbRating}</h3>
-      </div>
+      <Link to={`/movieId/${props.movie.id}`}>
+        <div className={MovieItemCss.movieItem} style={{ backgroundImage: backgroundImageUrl }}>
+          <h2>{props.movie.title}</h2>
+          <h3>{props.movie.imDbRating}</h3>
+        </div>
       </Link>
     </div>
   )
