@@ -22,19 +22,6 @@ function MovieDetails() {
     }
   }, [selectedMovie])
 
-  const MovieDescription = (props = { movie: {} as Item }) => {
-    return (
-      <div className={MovieDetailsCss.movieInfo}>
-        <img className={MovieDetailsCss.movieImage} src={props.movie.image}></img>
-        <div className={MovieDetailsCss.movieDescription}>
-          <h1>{props.movie.title}</h1>
-          <p>{props.movie.plot}</p>
-          <p>IMDB rating: {props.movie.imDbRating}</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className={MovieDetailsCss.mainContainer}>
       {loading ? <Loading /> : selectedMovie.id === id ? <MovieDescription movie={selectedMovie} /> :
@@ -42,6 +29,19 @@ function MovieDetails() {
           <MovieDescription movie={movieExistInList} /> :
           <h1>Not Found!</h1>
       }
+    </div>
+  )
+}
+
+const MovieDescription = (props = { movie: {} as Item }) => {
+  return (
+    <div className={MovieDetailsCss.movieInfo}>
+      <img className={MovieDetailsCss.movieImage} src={props.movie.image}></img>
+      <div className={MovieDetailsCss.movieDescription}>
+        <h1>{props.movie.title}</h1>
+        <p>{props.movie.plot}</p>
+        <p>IMDB rating: {props.movie.imDbRating}</p>
+      </div>
     </div>
   )
 }

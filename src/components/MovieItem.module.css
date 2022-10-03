@@ -8,13 +8,17 @@
   background-size: contain;
 }
 
-h2{
+.movieDetailsLink {
+  text-decoration: none;
+}
+
+.movieTitle{
   color: white;
   font-family: Poppins;
   font-style: normal;
   font-weight:800;
 }
 
-h3{
+.movieRating{
   color: white;
 }

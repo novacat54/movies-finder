@@ -1,5 +1,5 @@
 import './App.css';
-import SearchPage from './components/SearchPage';
+import SearchPanel from './components/SearchPage';
 import MoviesList from './components/MoviesList';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import MovieDetails from './components/MovieDetails';
@@ -14,7 +14,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <SearchPage />
+        <SearchPanel />
         {errorMessage !== '' && errorMessage !== null ?
           <ErrorMessage message={errorMessage} /> : (
             <Routes>

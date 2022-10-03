@@ -2,14 +2,13 @@ import SearchPageCss from './SearchPage.module.css';
 import { ChangeEvent, KeyboardEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function SearchPage() {
+function SearchPanel() {
 
   const navigate = useNavigate();
 
   const enterKeyPressed = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.target.value !== "") {
       navigate(`/searchMovie/${event.target.value}`);
-      event.target.value = '';
     }
   }
 
@@ -38,4 +37,4 @@ function SearchPage() {
   )
 }
 
-export default SearchPage;
+export default SearchPanel;
