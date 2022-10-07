@@ -11,3 +11,7 @@ export type RequestParams = {
   searchMovie: string,
   genre: string,
 }
+
+export type MovieItemProps = {
+  movie: Item,
+}

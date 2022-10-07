@@ -1,31 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getMoviesInTheaters, getMoviesByGenreOnly, getMoviesBySearchTitle, getMovieById } from "../api/IMDBApiService";
 import type { Item, RequestParams } from './dataTypes';
 
-const apiKey = "k_k42v67iw";
+
 
 export const getMovies = createAsyncThunk("movies/getMovies", async ({ searchMovie = '', genre = '' }: RequestParams) => {
   if (searchMovie !== '') {
-    return fetch(`https://imdb-api.com/en/API/SearchMovie/${apiKey}/${searchMovie}`).then((res) => {
-      return res.json();
-    })
+    return getMoviesBySearchTitle(searchMovie);
   }
 
   else if (genre !== '') {
-    return fetch(`https://imdb-api.com/en/API/AdvancedSearch/${apiKey}/?genres=${genre}`).then((res) => {
-      return res.json();
-    })
+    return getMoviesByGenreOnly(genre);
   }
   else {
-    return fetch("https://imdb-api.com/en/API/InTheaters/" + apiKey).then((res) => {
-      return res.json();
-    })
+    return getMoviesInTheaters();
   }
 })
 
 export const getMovie = createAsyncThunk('movie/getMovie', async (movieId: string) => {
-  return fetch(`https://imdb-api.com/en/API/Title/${apiKey}/${movieId}`).then((res) => {
-    return res.json();
-  })
+  return getMovieById(movieId);
 })
 
 const moviesSlice = createSlice(({
