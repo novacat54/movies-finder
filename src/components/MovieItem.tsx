@@ -1,8 +1,8 @@
-import { Item } from '../redux/dataTypes';
+import { MovieItemProps } from '../redux/dataTypes';
 import MovieItemCss from './MovieItem.module.css';
 import { Link } from 'react-router-dom';
 
-function MovieItem(props = { movie: {} as Item }) {
+function MovieItem(props: MovieItemProps) {
 
   let backgroundImageUrl = `url(${props.movie.image})`;
 
