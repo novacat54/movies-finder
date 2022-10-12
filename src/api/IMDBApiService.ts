@@ -7,16 +7,10 @@ export const getMoviesInTheaters = () => {
   })
 }
 
-export const getMoviesByGenreOnly = (genre:string) => {
-  return fetch(`https://imdb-api.com/en/API/AdvancedSearch/${apiKey}/?genres=${genre}`).then((res) => {
+export const getMoviesBySearchParams = (genre:string) => {
+  return fetch(`https://imdb-api.com/en/API/AdvancedSearch/${apiKey}/?${genre}`).then((res) => {
     return res.json();
   })
-}
-
-export const getMoviesBySearchTitle = (searchMovie:string) => {
-  return fetch(`https://imdb-api.com/en/API/SearchMovie/${apiKey}/${searchMovie}`).then((res) => {
-      return res.json();
-    })
 }
 
 export const getMovieById = (movieId:string) => {
