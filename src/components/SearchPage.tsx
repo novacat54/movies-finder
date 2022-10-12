@@ -1,20 +1,34 @@
 import SearchPageCss from './SearchPage.module.css';
 import { ChangeEvent, KeyboardEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 function SearchPanel() {
 
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const enterKeyPressed = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.target.value !== "") {
-      navigate(`/searchMovie/${event.target.value}`);
+      searchParams.set('title', event.target.value);
+      setSearchParams([...searchParams.entries()]);
+    }
+    if (event.key === 'Enter' && event.target.value === ""){
+      if (searchParams.get('title')){
+        searchParams.delete('title');
+        setSearchParams([...searchParams.entries()]);
+      }
     }
   }
 
   const handleGenreChange = (event: ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value !== "Select genre") {
-      navigate(`/searchGenre/${event.target.value}`);
+      searchParams.set('genres', event.target.value);
+      setSearchParams([...searchParams.entries()]);
+    }
+    else{
+      if (searchParams.get('genres')){
+         searchParams.delete('genres');
+         setSearchParams([...searchParams.entries()]);
+      }
     }
   }
 

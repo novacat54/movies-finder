@@ -1,9 +1,9 @@
 import MoviesListCss from './MoviesList.module.css'
 import MovieItem from './MovieItem';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
-import { getMovies } from '../redux/moviesSlice';
+import { inTheaters, moviesBySearchParams } from '../redux/moviesSlice';
 import Loading from './Loading';
 
 function MoviesList() {
@@ -12,24 +12,20 @@ function MoviesList() {
   let { movieName, moviesGenre } = useParams();
 
   const { loading, moviesListFromIMDB, expression, queryString } = useAppSelector(state => state.movies);
+  const [ searchParams ] = useSearchParams();
 
   useEffect(() => {
-    if (movieName !== undefined && expression !== movieName) {
-      dispatch(getMovies({ searchMovie: movieName, genre: '' }));
-    }
-    if (moviesGenre !== undefined && (queryString === undefined || !queryString.includes(moviesGenre))) {
-      dispatch(getMovies({ searchMovie: '', genre: moviesGenre }));
-    }
-
-    if (movieName === undefined && moviesGenre === undefined) {
-      if (moviesListFromIMDB.length === 0) {
-        dispatch(getMovies({ searchMovie: '', genre: '' }));
+      if(searchParams.toString() === ''){
+        console.log(searchParams.toString());
+        debugger;
+        dispatch(inTheaters());
       }
-      if (moviesListFromIMDB.length > 0 && (expression?.length > 0 || queryString?.length > 0)) {
-        dispatch(getMovies({ searchMovie: '', genre: '' }));
+      if(searchParams.toString() !==''){
+        console.log(searchParams.toString());
+        debugger;
+        dispatch(moviesBySearchParams(searchParams.toString()));
       }
-    }
-  }, [movieName, moviesGenre]);
+    }, [searchParams]);
 
   return (
     <div>

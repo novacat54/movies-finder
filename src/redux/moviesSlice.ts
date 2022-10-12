@@ -1,20 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getMoviesInTheaters, getMoviesByGenreOnly, getMoviesBySearchTitle, getMovieById } from "../api/IMDBApiService";
+import { getMoviesInTheaters, getMoviesBySearchParams, getMovieById } from "../api/IMDBApiService";
 import type { Item, RequestParams } from './dataTypes';
 
 
-
-export const getMovies = createAsyncThunk("movies/getMovies", async ({ searchMovie = '', genre = '' }: RequestParams) => {
-  if (searchMovie !== '') {
-    return getMoviesBySearchTitle(searchMovie);
-  }
-
-  else if (genre !== '') {
-    return getMoviesByGenreOnly(genre);
-  }
-  else {
+export const inTheaters = createAsyncThunk("moviesInTheaters/getMoviesInTheaters", async() => {
     return getMoviesInTheaters();
-  }
+})
+
+export const moviesBySearchParams = createAsyncThunk("moviesByParams/getMoviesByParams", async (genre:string) => {
+  return getMoviesBySearchParams(genre);
 })
 
 export const getMovie = createAsyncThunk('movie/getMovie', async (movieId: string) => {
@@ -34,17 +28,30 @@ const moviesSlice = createSlice(({
   reducers: {},
   extraReducers: builder => {
     builder
-      .addCase(getMovies.pending, (state) => {
+      .addCase(inTheaters.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getMovies.fulfilled, (state, action) => {
+      .addCase(inTheaters.fulfilled, (state, action) => {
         state.loading = false;
         state.moviesListFromIMDB = action.payload.items || action.payload.results;
         state.expression = action.payload.expression || undefined;
         state.errorMessage = action.payload.errorMessage;
         state.queryString = action.payload.queryString || undefined;
       })
-      .addCase(getMovies.rejected, (state) => {
+      .addCase(inTheaters.rejected, (state) => {
+        state.loading = false
+      })
+      .addCase(moviesBySearchParams.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(moviesBySearchParams.fulfilled, (state, action) => {
+        state.loading = false;
+        state.moviesListFromIMDB = action.payload.items || action.payload.results;
+        state.expression = action.payload.expression || undefined;
+        state.errorMessage = action.payload.errorMessage;
+        state.queryString = action.payload.queryString || undefined;
+      })
+      .addCase(moviesBySearchParams.rejected, (state) => {
         state.loading = false
       })
       .addCase(getMovie.pending, (state) => {
