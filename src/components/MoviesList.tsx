@@ -9,10 +9,10 @@ import Loading from './Loading';
 function MoviesList() {
 
   const dispatch = useAppDispatch();
-  let { movieName, moviesGenre } = useParams();
 
-  const { loading, moviesListFromIMDB, expression, queryString } = useAppSelector(state => state.movies);
+  const { loading, moviesListFromIMDB } = useAppSelector(state => state.movies);
   const [ searchParams ] = useSearchParams();
+  
 
   useEffect(() => {
       if(searchParams.toString() === ''){
@@ -20,7 +20,7 @@ function MoviesList() {
         debugger;
         dispatch(inTheaters());
       }
-      if(searchParams.toString() !==''){
+      if(searchParams.get('genres') || searchParams.get('title')){
         console.log(searchParams.toString());
         debugger;
         dispatch(moviesBySearchParams(searchParams.toString()));
