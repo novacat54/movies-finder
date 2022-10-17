@@ -1,18 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getMoviesInTheaters, getMoviesBySearchParams, getMovieById } from "../api/IMDBApiService";
+import { memoize } from "../helpers/cache";
 import type { Item, RequestParams } from './dataTypes';
 
+const memMoviesInTheaters = memoize(getMoviesInTheaters);
+const memSearchByParams = memoize(getMoviesBySearchParams);
+const memMovieById = memoize(getMovieById);
 
 export const inTheaters = createAsyncThunk("moviesInTheaters/getMoviesInTheaters", async() => {
-    return getMoviesInTheaters();
+    return memMoviesInTheaters("default");
 })
 
 export const moviesBySearchParams = createAsyncThunk("moviesByParams/getMoviesByParams", async (genre:string) => {
-  return getMoviesBySearchParams(genre);
+  return memSearchByParams(genre);
+  
 })
 
 export const getMovie = createAsyncThunk('movie/getMovie', async (movieId: string) => {
-  return getMovieById(movieId);
+  return memMovieById(movieId);
 })
 
 const moviesSlice = createSlice(({
