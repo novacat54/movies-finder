@@ -19,8 +19,6 @@ function App() {
           <ErrorMessage message={errorMessage} /> : (
             <Routes>
               <Route path="/" element={<MoviesList />} />
-              <Route path='/searchMovie/:movieName' element={<MoviesList />} />
-              <Route path='/searchGenre/:moviesGenre' element={<MoviesList />} />
               <Route path="/movieId/:id" element={<MovieDetails />} />
             </Routes>
           )}
