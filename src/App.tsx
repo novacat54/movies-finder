@@ -1,10 +1,10 @@
 import './App.css';
-import SearchPanel from './components/SearchPage';
-import MoviesList from './components/MoviesList';
+import SearchPanel from './components/SearchPanel/SearchPanel';
+import MoviesList from './components/MovieList/MoviesList';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MovieDetails from './components/MovieDetails';
+import MovieDetails from './components/MovieDetails/MovieDetails';
 import { useAppSelector } from './redux/hooks';
-import ErrorMessage from './components/ErrorMessage';
+import ErrorMessage from './components/Helpers/ErrorMessage';
 
 
 function App() {

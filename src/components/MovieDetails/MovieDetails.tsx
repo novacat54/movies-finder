@@ -1,10 +1,10 @@
-import { Item } from '../redux/dataTypes';
+import { Movie } from '../../redux/dataTypes';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { getMovie } from '../redux/moviesSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { getMovie } from '../../redux/moviesSlice';
 import { useEffect } from 'react';
-import MovieDetailsCss from './MovieDetails.module.css';
-import Loading from './Loading';
+import styles from './MovieDetails.module.css';
+import Loading from '../Helpers/Loading';
 
 function MovieDetails() {
 
@@ -13,7 +13,7 @@ function MovieDetails() {
   const dispatch = useAppDispatch();
 
   const { loading } = useAppSelector(state => state.movies);
-  const selectedMovie = useAppSelector(state => state.movies.moviesListFromIMDB.find(item => item.id === id));
+  const selectedMovie = useAppSelector(state => state.movies.moviesListFromAPI.find(item => item.id === id));
 
   useEffect(() => {
     if (selectedMovie?.id !== id || selectedMovie?.plot === null) {
@@ -22,7 +22,7 @@ function MovieDetails() {
   }, [selectedMovie])
 
   return (
-    <div className={MovieDetailsCss.mainContainer}>
+    <div className={styles.mainContainer}>
       {loading ? <Loading /> : selectedMovie ? <MovieDescription movie={selectedMovie} /> :
           <h1>Not Found!</h1>
       }
@@ -30,11 +30,11 @@ function MovieDetails() {
   )
 }
 
-const MovieDescription = (props = { movie: {} as Item }) => {
+const MovieDescription = (props = { movie: {} as Movie }) => {
   return (
-    <div className={MovieDetailsCss.movieInfo}>
-      <img className={MovieDetailsCss.movieImage} src={props.movie.image}></img>
-      <div className={MovieDetailsCss.movieDescription}>
+    <div className={styles.movieInfo}>
+      <img className={styles.movieImage} src={props.movie.image}></img>
+      <div className={styles.movieDescription}>
         <h1>{props.movie.title}</h1>
         <p>{props.movie.plot}</p>
         <p>IMDB rating: {props.movie.imDbRating}</p>
