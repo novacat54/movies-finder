@@ -1,4 +1,4 @@
-export type Item = {
+export type Movie = {
   id: string,
   contentRating: string,
   title: string,
@@ -7,11 +7,6 @@ export type Item = {
   plot: string,
 }
 
-export type RequestParams = {
-  searchMovie: string,
-  genre: string,
-}
-
 export type MovieItemProps = {
-  movie: Item,
+  movie: Movie,
 }

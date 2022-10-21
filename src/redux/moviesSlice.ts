@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getMoviesInTheaters, getMoviesBySearchParams, getMovieById } from "../api/IMDBApiService";
 import { memoize } from "../helpers/cache";
-import type { Item } from './dataTypes';
+import type { Movie } from './dataTypes';
 
 const memMoviesInTheaters = memoize(getMoviesInTheaters);
 const memSearchByParams = memoize(getMoviesBySearchParams);
@@ -23,8 +23,7 @@ const moviesSlice = createSlice(({
   name: 'movies',
   initialState: {
     errorMessage: "",
-    moviesListFromIMDB: [] as Item[],
-    selectedMovie: {} as Item,
+    moviesListFromAPI: [] as Movie[],
     loading: false,
   },
   reducers: {},
@@ -35,7 +34,7 @@ const moviesSlice = createSlice(({
       })
       .addCase(inTheaters.fulfilled, (state, action) => {
         state.loading = false;
-        state.moviesListFromIMDB = action.payload.items || action.payload.results;
+        state.moviesListFromAPI = action.payload.items || action.payload.results;
         state.errorMessage = action.payload.errorMessage;
       })
       .addCase(inTheaters.rejected, (state) => {
@@ -46,7 +45,7 @@ const moviesSlice = createSlice(({
       })
       .addCase(moviesBySearchParams.fulfilled, (state, action) => {
         state.loading = false;
-        state.moviesListFromIMDB = action.payload.items || action.payload.results;
+        state.moviesListFromAPI = action.payload.items || action.payload.results;
         state.errorMessage = action.payload.errorMessage;
       })
       .addCase(moviesBySearchParams.rejected, (state) => {
@@ -59,11 +58,11 @@ const moviesSlice = createSlice(({
         state.loading = false;
         //This section is needed, because in some cases many movies does not include plot.
         //In such case additionla call with advanced search is done.
-        if (!!state.moviesListFromIMDB.find(x => x.id === action.payload.id)){
-          state.moviesListFromIMDB = state.moviesListFromIMDB.filter(x => x.id!==action.payload.id);
+        if (!!state.moviesListFromAPI.find(x => x.id === action.payload.id)){
+          state.moviesListFromAPI = state.moviesListFromAPI.filter(x => x.id!==action.payload.id);
         }
-        state.moviesListFromIMDB.push(action.payload);
-        state.moviesListFromIMDB = state.moviesListFromIMDB.map(x => Object.assign({}, x));
+        state.moviesListFromAPI.push(action.payload);
+        state.moviesListFromAPI = state.moviesListFromAPI.map(x => Object.assign({}, x));
         state.errorMessage = action.payload.errorMessage;
       })
       .addCase(getMovie.rejected, (state) => {

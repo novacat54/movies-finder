@@ -6,6 +6,8 @@
 }
 
 .searchField{
+  padding-left: 10px;
+  font-size: inherit;
   position: absolute;
   width: 587px;
   height: 48px;
@@ -16,6 +18,8 @@
 }
 
 .genres{
+  padding-left: 10px;
+  font-size: inherit;
   position: absolute;
   width: 236px;
   height: 48px;

@@ -1,4 +1,4 @@
-import SearchPageCss from './SearchPage.module.css';
+import styles from './SearchPanel.module.css';
 import { ChangeEvent, KeyboardEvent, useEffect } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
@@ -6,6 +6,8 @@ import { useState } from 'react';
 function SearchPanel() {
 
   const [dropdownValue, setDropdownValue ] = useState("Select genre"); 
+  const [inputValue, setInputValue] = useState("");
+
 
   let location = useLocation();
   let navigate = useNavigate();
@@ -16,13 +18,20 @@ function SearchPanel() {
     if (!searchParams.get('genres')){
       setDropdownValue("Select genre");
     }
-    if(searchParams.get('genres') && dropdownValue!==searchParams.get('genres')){
+    if(searchParams.get('genres') && dropdownValue !== searchParams.get('genres')){
       setDropdownValue(searchParams.get('genres')!);
+    }
+    if(!searchParams.get('title')){
+      setInputValue("");
+    }
+    if(searchParams.get('title') && inputValue !== searchParams.get('title')){
+      setInputValue(searchParams.get('title')!);
     }
   }, [searchParams]);
 
   const enterKeyPressed = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && event.target.value !== "") {
+      setInputValue(event.target.value);
       searchParams.set('title', event.target.value);
       setSearchParams([...searchParams.entries()]);
       if (location.pathname !== '/'){
@@ -31,6 +40,7 @@ function SearchPanel() {
     }
     if (event.key === 'Enter' && event.target.value === ""){
       if (searchParams.get('title')){
+        setInputValue('');
         searchParams.delete('title');
         setSearchParams([...searchParams.entries()]);
       }
@@ -55,13 +65,17 @@ function SearchPanel() {
     }
   }
 
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  }
+
   return (
-    <div className={SearchPageCss.searchComponents}>
+    <div className={styles.searchComponents}>
       <div>
-        <input className={SearchPageCss.searchField} placeholder='Search for a movie...' onKeyPress={enterKeyPressed}></input>
+        <input className={styles.searchField} value={inputValue} onChange={handleInputChange} placeholder='Search for a movie...' onKeyPress={enterKeyPressed}></input>
       </div>
 
-      <select className={SearchPageCss.genres} value={dropdownValue} name="genres" id="genres" onChange={handleGenreChange}>
+      <select className={styles.genres} value={dropdownValue} name="genres" id="genres" onChange={handleGenreChange}>
         <option value="Select genre">Select genre</option>
         <option value="comedy">Comedy</option>
         <option value="horror">Horror</option>
@@ -69,6 +83,12 @@ function SearchPanel() {
         <option value="thriller">Thriller</option>
         <option value="action">Action</option>
         <option value="adventure">Adventure</option>
+        <option value="mystery">Mystery</option>
+        <option value="drama">Drama</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="animation">Animation</option>
+        <option value="crime">Crime</option>
+        <option value="thriller">Thriller</option>
       </select>
     </div>
   )
