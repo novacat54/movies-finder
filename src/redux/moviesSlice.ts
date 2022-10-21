@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getMoviesInTheaters, getMoviesBySearchParams, getMovieById } from "../api/IMDBApiService";
 import { memoize } from "../helpers/cache";
-import type { Item, RequestParams } from './dataTypes';
+import type { Item } from './dataTypes';
 
 const memMoviesInTheaters = memoize(getMoviesInTheaters);
 const memSearchByParams = memoize(getMoviesBySearchParams);
@@ -13,7 +13,6 @@ export const inTheaters = createAsyncThunk("moviesInTheaters/getMoviesInTheaters
 
 export const moviesBySearchParams = createAsyncThunk("moviesByParams/getMoviesByParams", async (genre:string) => {
   return memSearchByParams(genre);
-  
 })
 
 export const getMovie = createAsyncThunk('movie/getMovie', async (movieId: string) => {
@@ -24,11 +23,9 @@ const moviesSlice = createSlice(({
   name: 'movies',
   initialState: {
     errorMessage: "",
-    expression: "",
     moviesListFromIMDB: [] as Item[],
     selectedMovie: {} as Item,
     loading: false,
-    queryString: "",
   },
   reducers: {},
   extraReducers: builder => {
@@ -39,9 +36,7 @@ const moviesSlice = createSlice(({
       .addCase(inTheaters.fulfilled, (state, action) => {
         state.loading = false;
         state.moviesListFromIMDB = action.payload.items || action.payload.results;
-        state.expression = action.payload.expression || undefined;
         state.errorMessage = action.payload.errorMessage;
-        state.queryString = action.payload.queryString || undefined;
       })
       .addCase(inTheaters.rejected, (state) => {
         state.loading = false
@@ -52,9 +47,7 @@ const moviesSlice = createSlice(({
       .addCase(moviesBySearchParams.fulfilled, (state, action) => {
         state.loading = false;
         state.moviesListFromIMDB = action.payload.items || action.payload.results;
-        state.expression = action.payload.expression || undefined;
         state.errorMessage = action.payload.errorMessage;
-        state.queryString = action.payload.queryString || undefined;
       })
       .addCase(moviesBySearchParams.rejected, (state) => {
         state.loading = false
@@ -64,7 +57,13 @@ const moviesSlice = createSlice(({
       })
       .addCase(getMovie.fulfilled, (state, action) => {
         state.loading = false;
-        state.selectedMovie = action.payload;
+        //This section is needed, because in some cases many movies does not include plot.
+        //In such case additionla call with advanced search is done.
+        if (!!state.moviesListFromIMDB.find(x => x.id === action.payload.id)){
+          state.moviesListFromIMDB = state.moviesListFromIMDB.filter(x => x.id!==action.payload.id);
+        }
+        state.moviesListFromIMDB.push(action.payload);
+        state.moviesListFromIMDB = state.moviesListFromIMDB.map(x => Object.assign({}, x));
         state.errorMessage = action.payload.errorMessage;
       })
       .addCase(getMovie.rejected, (state) => {

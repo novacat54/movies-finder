@@ -12,21 +12,18 @@ function MovieDetails() {
 
   const dispatch = useAppDispatch();
 
-  const { moviesListFromIMDB, selectedMovie, loading } = useAppSelector(state => state.movies);
-
-  const movieExistInList = moviesListFromIMDB.find(item => item.id === id);
+  const { loading } = useAppSelector(state => state.movies);
+  const selectedMovie = useAppSelector(state => state.movies.moviesListFromIMDB.find(item => item.id === id));
 
   useEffect(() => {
-    if ((movieExistInList?.id !== id || movieExistInList?.plot === undefined) && selectedMovie.id !== id && id !== undefined) {
-      dispatch(getMovie(id));
+    if (selectedMovie?.id !== id || selectedMovie?.plot === null) {
+      dispatch(getMovie(id!));
     }
   }, [selectedMovie])
 
   return (
     <div className={MovieDetailsCss.mainContainer}>
-      {loading ? <Loading /> : selectedMovie.id === id ? <MovieDescription movie={selectedMovie} /> :
-        movieExistInList?.title ?
-          <MovieDescription movie={movieExistInList} /> :
+      {loading ? <Loading /> : selectedMovie ? <MovieDescription movie={selectedMovie} /> :
           <h1>Not Found!</h1>
       }
     </div>
